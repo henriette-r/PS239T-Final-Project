@@ -1,0 +1,163 @@
+---
+title: "02_data_collection_web_scraping"
+output: html_document
+---
+
+#### PS239T - An Introduction to Computational Tools and Techniques for Social Science Research
+#### Henriette Ruhrmann
+#### Final Project
+#### April 25, 2018
+
+# 2. Data Collection through Web Scraping
+
+_Note: This code is written to collect the data for part (B) of my final project in which I analyze the readability of the natural language text of government websites. I use five commonly used readability indexes that provide information on the years of formal education or grade level a reader needs to have attained to be able to understand the text (the Flesch Kincaid Score, the Gunning Fog Index, the Coleman Liau Index, the SMOG Reading Formula, and the Automated_Readability_Index)._
+
+## 2.1 Set Up
+
+In this section, I am preparing my workspace for the data collection through webscraping.
+
+#### 2.1.1 Setting up the Environment
+
+```{r Environment}
+
+# Removing all objects
+rm(list=ls())
+
+# Setting the working directory
+setwd(dir="/Users/HetteRiette/Desktop/PS239T-Final-Project")
+getwd()
+
+```
+
+
+#### 2.1.2 Loading Packages
+
+As in the previous subpart of my project, I used the Pacman package to efficiently install and load any new packages my code required. 
+
+```{r Packages}
+
+# Loading the Pacman package
+library (pacman)
+
+# Installing and loading packages in one step with Pacman package
+pacman::p_load(rvest, 
+               dplyr) 
+#library(rvest)
+#library(dplyr)
+
+
+```
+
+
+#### 2.1.3 Reading in the Data
+
+In this second subpart of my project, I built directly on the results of the first subpart and started with the resulting dataset (for more information on the source of any of the data in the dataset, please refer to the previous code). Moreover, I checked the structure of my dataset with a particular interest in the scraper_url variable that I planned to scrape my data from, which I converted to a character vector.
+
+```{r Reading the Data File}
+
+gov_sites <- read.csv("01_api_gov_sites_df.csv")
+
+# Checking whether the URL is a string variable
+str(gov_sites)
+
+# Converting the URL to a string variable
+gov_sites$scraper_url <- as.character(gov_sites$scraper_url)
+
+# Doublechecking whether the URL is a string variable
+str(gov_sites)
+
+```
+
+
+## 2.2 Building the Webscraper
+
+Based on my exploration of the specific webpages I planned to scrape with the Selector Gadget, I knew that the natural language text I was interested in was either available in the form of text paragraphs (CSS selector "p") or lists (CSS selector "li"). Therefore, I decided to write webscrapers for both CSS selectors and combine the scraped text. I was able to do this without compromising my results because I was not actually interested in the content (and order) of the text but its readability based on formulas using the number of phrases, words, and syllables.
+
+```{r Webscraper}
+
+# Building the webscraper for paragraph elements
+gov_sites$text_p <- gov_sites$scraper_url %>%
+  lapply(read_html) %>%
+  lapply(html_nodes, css = "p") %>% 
+  sapply(html_text)
+
+# Building the webscraper for list elements
+gov_sites$text_li <- gov_sites$scraper_url %>%
+  lapply(read_html) %>%
+  lapply(html_nodes, css = "li") %>% 
+  sapply(html_text)
+
+# Combining the results
+gov_sites$text <- paste(gov_sites$text_p, gov_sites$text_li)
+
+```
+
+
+## 2.3 Text Cleaning
+
+After having thus collected the scraped text, I proceeded to the more challenging task of cleaning the text by eliminating clearly irrelevant elements. For this purpose, I first wrote a text cleaning loop to delete text elements that I identified as clearly irrelevant through manual browsing, as well as special characters. Secondly, I decided to trim my text samples to a uniform length of around 150 words with the goal of achieving comparability across websites which also helped in cleaning the text because most irrelevant text that was picked up was located at the end of the text samples. Lastly, I removed the variables that contained the original longer text samples because they were not needed for the following analysis and slowed down my processing of the dataset.
+
+```{r Text Cleaning}
+
+gov_sites$clean <- gov_sites$text
+
+# Clean the raw text
+for (i in 1:nrow(gov_sites)){
+     gov_sites$clean <- gsub("###.*","", gov_sites$clean)
+     gov_sites$clean <- gsub("Enter your e-mail.*"," ", gov_sites$clean)
+     gov_sites$clean <- gsub("Enter your email.*"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("For more information.*"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("Print this page"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("r NWS r All NOAA r "," ", gov_sites$clean)
+     gov_sites$clean <- gsub("t t t t t t t t tView this video on YouTube. t t t t t t t "," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("r tSkip to content r tSkip to footer site map r t"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("tALERT:"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("en Español"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("Skip to Main Content"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("Search r"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("Search HealthyPeople.gov"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("*.»"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("-"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("–"," ", gov_sites$clean)
+     gov_sites$clean <- gsub("—"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("“"," ", gov_sites$clean)
+     gov_sites$clean <- gsub("”"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\\\\n","", gov_sites$clean)
+     gov_sites$clean <- gsub("c\\("," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\","," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\""," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\\("," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\\)"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\\#"," ", gov_sites$clean) 
+     gov_sites$clean <- gsub("\\/"," ", gov_sites$clean)
+     gov_sites$clean <- gsub("\\"," ", gov_sites$clean, fixed = T)
+}
+
+# Checking whether the cleaning took effect
+identical(gov_sites$text, gov_sites$clean)
+
+# Trimming the text to 150 words
+string_fun <- function(x) {
+  ul = unlist(strsplit(x, split = "\\s+"))[1:150]
+  paste(ul,collapse=" ")
+}
+
+for (i in 1:nrow(gov_sites)){
+     gov_sites$clean_150[i] <- string_fun(gov_sites$clean[i])
+}
+
+# Removing irrelevant variables
+gov_sites <- select(gov_sites, -text_p, -text_li, -text, -clean)
+
+```
+
+## 2.4 Exporting the Data
+
+Finally, I exported the augmented dataset to have it available as the starting point for the subsequent steps in my project.
+
+```{r Exporting}
+
+# Exporting the data
+write.csv(gov_sites, "02_webscraping_gov_sites_df.csv")
+
+```

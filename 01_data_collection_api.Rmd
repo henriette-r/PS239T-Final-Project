@@ -1,0 +1,448 @@
+---
+title: "01_data_collection_api"
+output: html_document
+---
+
+#### PS239T - An Introduction to Computational Tools and Techniques for Social Science Research
+#### Henriette Ruhrmann
+#### Final Project
+#### April 25, 2018
+
+# 1. Data Collection through Structural Design Accessibility API
+
+_Note: This code is written to collect the data for part (A) of my final project in which I analyze the accessibility of the structural design of government websites. The structural design of a website refers here to the logic of the code and markup that determines the organization and presentation of natural information such as text, images, or sound. My frame of reference for code-based website accessibility are the U.S. Section 508 and the international WCAG 2.0 standard._
+
+## 1.1 Set Up
+
+In this section, I am preparing my workspace for the data collection through the AChecker web accessibility API.
+
+#### 1.1.1 Setting up the Environment
+
+```{r Environment}
+
+# Removing all objects
+rm(list=ls())
+
+# Setting the working directory
+setwd(dir="/Users/HetteRiette/Desktop/PS239T-Final-Project")
+getwd()
+
+```
+
+
+#### 1.1.2 Loading Packages
+
+Instead of installing and subsequently loading all required packages through the _library_ function that is part of R's base package, I learned that the Pacman package can handle this task more efficiently. After installing and loading the Pacman package, I was able to simultaneously install and load any new packages my code required. 
+
+```{r Packages}
+
+# Installing and loading the Pacman package
+# install.packages("pacman")
+library (pacman)
+
+# Installing and loading packages in one step with the Pacman package
+pacman::p_load(tidyr, 
+               plyr, 
+               dplyr,
+               Hmisc,
+               httr, 
+               httpuv, 
+               XML) 
+
+#library(tidyr)
+#library(plyr)
+#library(dplyr)
+#library(hmisc)
+#library(httr)
+#library(httpuv)
+#library(XML)
+
+```
+
+
+#### 1.1.3 Reading in the Data
+
+The original dataset my project is based on is a sample of the 100 most relevant U.S. government websites based on the total number of users in the 30 days prior to April 11, 2018, downloaded from https://analytics.usa.gov/data. Analytics.usa.gov is a federal website providing access to data from the unified Google Analytics account for U.S. federal government agencies known as the Digital Analytics Program.
+
+The original data file included the following variables:
+* "domain"
++ The respective website's domain name.
+
+* "visits"
++ The number of "visits" measures how often a user reaches the website from somewhere outside of the website. 
+
+* "pageviews"
++ The number of "pageviews" counts the number of times a website is loaded (or reloaded) in a browser. "Pageviews" is a metric defined by Google Analytics as "the total number of pages viewed."
+
+* "users"
++ The number of "users" measures how many users viewed or interacted with the website is a certain period of time, here, the past 30 days.
+
+* "pageviews_per_session"
++ The number of "pageviews per session" relates the number of pageviews to the concept of a session. A session refers to the period of time a user is active on a website. After a period of inactivity of 30 minutes or more, any future activity is attributed to a new session. 
+
+* "avg_session_duration"
++ The "average session duration" is calculated as the total duration of all sessions (in seconds) divided by the number of sessions.
+
+* "avg_session_duration"
++ The "exits" variable measures the number of exits from the website.
+
+For the purposes of my project, I decided to assess a website's relevance based on the number of users, i.e. its reach. Therefore, I selected a sample of the 100 most relevant federal government websites (sorted by the number of users). I excluded any.mil or .com domains (such as usps.com), mobile versions of a website, and any sub-website of a main website that had already been included in the sample. 
+
+Furthermore, I added manually added information on the following three variables:
+
+* "url"
++ The website's URL address.
+
+* "category"
++ A website's classification in one of 10 categories based on the categories used by usa.gov (Benefits; Children and Education; Consumer Products and Safety; Law Enforcement and Justice (reworded); Government Officials; Health; Home, Community, and Work; Military and Veterans; Money and Business; Travel and Transportation).
+
+* "scraper_url"
++ For each of the 100 websites I manually navigated to the most relevant website with at least 150 words of scrapable natural language text. I formulated a qualitative strategy in advance to ensure the best possible comparability across websites:
+    1. Navigating to the "About" section
+    2. Navigating to "Mission" OR "What We Do" OR "Organization" OR the first relevant subpoint
+
+The final dataset "popular-gov-sites.csv" forms the starting point of my final project.
+
+```{r Reading the Data File}
+
+gov_sites <- read.csv("popular-gov-sites.csv")
+
+```
+
+#### 1.1.4 Organizing the Data
+
+For the purposes of the web accessibility API, my main variable of interest was the website's URL. For this reason, I started by checking the variable type of the URL variable and converted it to a string or character vector.
+
+```{r Confirming the correct data structure}
+
+# Checking the structure of each variable in the dataset
+str(gov_sites)
+
+# Converting the URL variable from a factor to a character vector
+gov_sites$url <- as.character(gov_sites$url)
+
+# Double-checking the structure of each variable in the dataset
+str(gov_sites)
+
+```
+
+
+## 1.2 Writing a Manual API Request
+
+To develop an understanding of the specific requirements of the AChecker Web Accessibility API, I decided to first create a manual API GET request by combining all relevant parameters (the documentation for the accessibility API used can be found here: https://achecker.ca/documentation/web_service_api.php).
+
+Firstly, I created objects containing the constant parameters in each GET request.
+
+```{r Basic (constant) Parameters}
+
+# Creating objects holding the base url, key, guideline, and response format
+
+base_url  <-"https://achecker.ca/checkacc.php"
+
+id        <-"id=2f9fdf623c442aa41fed3d9ac106ed7571b8cc8e"
+
+guide     <- "guide=WCAG2-AA,508"
+
+output    <- "output=rest"
+
+```
+
+Secondly, I selected two websites to test the manual GET request. Their respective URLs became the variable parameters in the GET request.
+
+```{r Additional (variable) Parameters}
+
+# Specifying a website to be evaluated, here two randomly selected trial websites
+
+uri_1 <-"https://www.justice.gov/"
+
+uri_2 <-"https://www.doi.gov/"
+
+```
+
+Thirdly, I proceeded to encode each URL as the search term as discussed in class (however, when creating my manual GET request function I realized that this step could be omitted).
+
+```{r URL Encoding the Search Term}
+
+# URL-encoding the search term
+search_term_1 <- URLencode(URL = uri_1, reserved = TRUE)
+
+search_term_2 <- URLencode(URL = uri_2, reserved = TRUE)
+
+# Checking the encoded search terms
+print(search_term_1)
+
+print(search_term_2)
+
+```
+
+Next, I combined all constant and variable parameters in the actual GET request.
+
+```{r Creating the GET Request}
+
+# Paste components together to create URL for get request
+get_request_1 <- paste0(base_url, "?uri=", search_term_1, "&", id, "&", guide, "&", output)
+
+get_request_2 <- paste0(base_url, "?uri=", search_term_2, "&", id, "&", guide, "&", output)
+
+
+# Checking the GET request
+print(get_request_1)
+
+print(get_request_2)
+
+```
+
+The responses I received after running my two test GET requests showed status code 200, indicating that my request was successful and that the response content was in XML format. 
+
+```{r Sending the GET Request}
+
+# Sending the GET request using httr package
+response_1 <- httr::GET(url = get_request_1)
+
+response_2 <- httr::GET(url = get_request_2)
+
+
+# Checking the response received
+print(response_1)
+
+print(response_2)
+
+```
+
+Since I was not yet familiar with XML response content, this created a challenge for me when attempting to extract the data. Through my independent search for a solution, I discovered the XML package and successfully used it to convert the content from my first test response to a rectangular data frame. However, with the same steps, I was not able to convert the content from my second test response, presumably because the first website I had selected actually had a flawless accessibility report whereas for the second websites errors were detected. During office hours, Jae taught me to handle response content in XML format and helped me write the code to clean the response before converting to a rectangular data frame.
+
+```{r Retrieving the Response Content}
+
+# Retrieving the content
+response_1t <- httr::content(x = response_1, "text")
+
+response_2t <- httr::content(x = response_2, "text")
+
+
+# If necessary, replacing elements to allow conversion
+response_2t <- gsub("\\&[^;]+;"," ", response_2t)
+
+
+# Parsing the XML file
+result_1 <- xmlParse(response_1t)
+
+result_2 <- xmlParse(response_2t)
+
+
+# If necessary, converting XML file to lists
+
+doi_list <- xmlToList(result_2)
+
+doi_results <- as.list(doi_list[["results"]]) 
+
+doi_summary <- as.list(doi_list[["summary"]]) 
+
+
+# Converting the XML file or the list to a rectangular data frame
+doj_df <- xmlToDataFrame(response_1t)
+
+doi_df <- as.data.frame(doi_summary)
+
+```
+
+
+## 1.3 Writing an Automatic API Request Function
+
+After successfully coding the manual API request, I proceeded to write a function that I could run over my complete list of websites in the sample. For the automatic function, I decided to use the more robust code that I wrote for my second text website with multiple errors reported to ensure that the function can handle the conversion regardless of the resulting response from the API. For the scope of my project, I decided to focus only on the error report summary that I needed for the next steps in my project.
+
+```{r Writing the GET Request Function}
+
+# Writing a function to create GET requests
+access_api <- function(uri=NULL){
+
+  # Pasting together the GET request
+  get_request <- paste0(base_url, "?uri=", uri, "&", id, "&", guide, "&", output)
+  
+  # Sending GET request
+  response    <- httr::GET(url = get_request)
+  
+  # Retrieving response content
+  response_t <- httr::content(x = response, "text")
+  
+  response_t <- gsub("\\&[^;]+;"," ", response_t)
+  
+  result_t <- xmlParse(response_t)
+  
+  list_t <- xmlToList(result_t)
+  
+  summary <- as.list(list_t[["summary"]]) 
+}
+
+```
+
+I decided to test whether my "automatic" API request through the function I wrote and my "manual" API request yield the same result. As a test subject, I used my second original test website, the Department of the Interior's website. After formatting both data frames in terms of variable names and structure, my test confirmed that the function reproduced the same result as the manually created GET request.
+
+```{r Checking the GET Request Function}
+
+# Running the automatic GET request function on the second test website
+report_doi <- access_api("http://doi.gov")
+
+# Converting the response in list format to a rectangular data frame
+report_doi_df <- data.frame(matrix(unlist(report_doi), nrow=1, byrow=T),stringsAsFactors=FALSE)
+
+# Renaming the columns both in my "manually" created data frame and my "automatically" created data frame
+names(doi_df)[1:7] <- c("status", 
+                               "session_ID",
+                               "n_errors",
+                               "n_lp",
+                               "n_pp",
+                               "guideline_1",
+                               "guideline_2")
+
+names(report_doi_df)[1:7] <- c("status", 
+                               "session_ID",
+                               "n_errors",
+                               "n_lp",
+                               "n_pp",
+                               "guideline_1",
+                               "guideline_2")
+
+# Checking the structure of both data frames
+str(doi_df)
+str(report_doi_df)
+
+# Converting the relevant n_errors column to a numeric vector
+doi_df$n_errors         <- as.character(doi_df$n_errors)
+doi_df$n_errors         <- as.numeric(doi_df$n_errors)
+report_doi_df$n_errors  <- as.numeric(report_doi_df$n_errors)
+
+# Double-checking the structure of both data frames
+str(doi_df)
+str(report_doi_df)
+
+# Checking whether the "manual" and the "automatic" API requests yield the same result
+identical(doi_df$n_errors[1], report_doi_df$n_errors[1])
+
+```
+
+
+## 1.4 Writing a Loop to Run the Function for all Websites
+
+As the next step, I wrote a loop tor un my function for each one of the 100 websites in my sample. However, when running the loop I encountered two problems where the loop broke and the same error message was generated. 
+
+(The original loop is commented out to allow for the file to be knit to HTML.)
+
+```{r Writing and Running the Loop (error encountered)}
+
+# Creating an empty list
+report_all <- list()
+
+# Writing the loop
+#for (i in 1:nrow(gov_sites)){
+#  report <- access_api(uri = gov_sites$url[i])
+#  report_all[[i+1]] <- report #<- rbind(response.df, i)
+#  message("Number of websites evaluated:",i)
+#}
+
+# Error generated on website 23 and website 41 with the following error message:
+
+#Error: 1: Opening and ending tag mismatch: hr line 5 and body
+#2: Opening and ending tag mismatch: body line 3 and html
+#3: Premature end of data in tag html line 1
+
+```
+
+I assume the reason the loop was not able to run the function on these two websites was that the websites auto-directed from the main domain to a slight variation of the domain name as the landing page. For this reason, I proceeded to manually replace the URL for these two websites with the URL of the actual landing page the website auto-directs to. After this step, the loop ran through all 100 websites in the sample without further problems and I was able to convert the content of the responses to a rectangular data frame.
+
+```{r Writing and Running the Loop (error fixed)}
+
+# Trying to run the API function on the url the website auto-directs to
+report_23 <- access_api("https://studentloans.gov/myDirectLoan/index.action")
+report_41 <- access_api("https://home.treasury.gov/")
+
+
+# Replacing the url in the original data with the auto-directed link
+gov_sites$url [23]  <- "https://studentloans.gov/myDirectLoan/index.action"
+gov_sites$url [41]  <- "https://home.treasury.gov/"
+
+# Writing the loop
+for (i in 1:nrow(gov_sites)){
+  report <- access_api(uri = gov_sites$url[i])
+  report_all[[i+1]] <- report #<- rbind(response.df, i)
+  message("Number of websites evaluated:",i)
+}
+
+# Checking the list of responses
+# print(report_all)
+
+# Converting the the list to a rectangular data frame
+report_all_df <- data.frame(matrix(unlist(report_all), nrow=100, byrow=T),stringsAsFactors=FALSE)
+
+```
+
+
+## 1.5 Exploring and Organizing the Data
+
+In the next step, I proceeded to organize the data by assigning the column names I wanted to work with for the next parts of the project, converting the relevant n_errors variable to a numeric vector, and summarizing the variable. To prepare the data for planned data visualizations, I decided to create a variable that assigns each observation to one of 11 bins based on the number of errors. Finally, I removed all variables that would not be helpful for the following parts of my project.
+
+```{r Exploring and Organizing the Data}
+
+# Renaming the columns
+names(report_all_df)[1:7] <- c("status", 
+                               "session_ID",
+                               "n_errors",
+                               "n_lp",
+                               "n_pp",
+                               "guideline_1",
+                               "guideline_2")
+# Exploring the data
+str(report_all_df$n_errors)
+
+# Reformatting the n_errors variable to a numeric vector
+report_all_df$n_errors <- as.numeric(report_all_df$n_errors)
+
+# Summarizing the  n_errors variable 
+summary(report_all_df$n_errors)
+
+describe(report_all_df$n_errors)
+
+mean(report_all_df$n_errors, na.rm = T)
+
+# Adding a summary variable
+report_all_df$error_bin[report_all_df$n_errors < 10] <-"0-10 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 10 & report_all_df$n_errors < 20] <- "10-19 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 20 & report_all_df$n_errors < 30] <- "20-29 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 30 & report_all_df$n_errors < 40] <- "30-39 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 40 & report_all_df$n_errors < 50] <- "40-49 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 50 & report_all_df$n_errors < 60] <- "50-59 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 60 & report_all_df$n_errors < 70] <- "60-69 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 70 & report_all_df$n_errors < 80] <- "70-79 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 80 & report_all_df$n_errors < 90] <- "80-89 errors"
+report_all_df$error_bin[report_all_df$n_errors >= 90 & report_all_df$n_errors < 100] <- "90-99 errors"
+report_all_df$error_bin[report_all_df$n_errors > 100] <- "More than 100 errors"
+
+# Deleting irrelevant variables
+report_all_df <- select(report_all_df, -session_ID, -guideline_1, -guideline_2)
+
+```
+
+
+## 1.6 Adding the Relevant Data to the Main Dataset
+
+To collect all data in one unified dataset, I then appended my original dataset containing information on all 100 websites with their respective error report summary.
+
+```{r Appending the Relevant Data}
+
+# Exporting the data
+gov_sites <- cbind(gov_sites, report_all_df)
+
+```
+
+
+## 1.7 Exporting the Data
+
+Finally, I was able to export the combined dataset to have it available as the starting point for the subsequent steps in my project.
+
+```{r Exporting}
+
+# Exporting the data
+write.csv(gov_sites, "01_api_gov_sites_df.csv")
+
+```
+
+

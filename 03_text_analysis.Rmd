@@ -1,0 +1,138 @@
+---
+title: "03_text_analysis"
+output: html_document
+---
+
+#### PS239T - An Introduction to Computational Tools and Techniques for Social Science Research
+#### Henriette Ruhrmann
+#### Final Project
+#### April 25, 2018
+
+# 3. Text Analysis
+
+_Note: This code is written to analyze the data for part (B) of my final project in which I analyze the readability of the natural language text of government websites. I use five commonly used readability indexes that provide information on the years of formal education or grade level a reader needs to have attained to be able to understand the text (the Flesch Kincaid Score, the Gunning Fog Index, the Coleman Liau Index, the SMOG Reading Formula, and the Automated_Readability_Index)._
+
+## 3.1 Set Up
+
+In this section, I am preparing my workspace for the analysis of the text samples scraped from my sample of 100 federal government websites.
+
+#### 3.1.1 Setting up the Environment
+
+```{r Environment}
+
+# Remove all objects
+rm(list=ls())
+
+# Set the working directory
+setwd(dir="/Users/HetteRiette/Desktop/PS239T-Final-Project/Data")
+getwd()
+
+```
+
+
+#### 3.1.2 Loading Packages
+
+As in the previous subparts of my project, I used the Pacman package to efficiently install and load any new packages my code required. 
+
+```{r Packages}
+library (pacman)
+
+# Installing and loading packages in one step with Pacman package
+pacman::p_load(rvest, 
+               dplyr, 
+               readability, 
+               stringr, 
+               ggplot2,
+               ggthemes,
+               scales,
+               viridis) 
+#library(rvest)
+#library(dplyr)
+#library(readability)
+#library(stringr)
+
+```
+
+
+#### 3.1.3 Reading in the Data
+
+In this third subpart of my project, I built directly on the results of the first and second subpart and started with the resulting dataset (for more information on the source of any of the data in the dataset, please refer to the previous code). 
+
+```{r Reading the Data File}
+
+gov_sites <- read.csv("02_webscraping_gov_sites_df.csv")
+
+```
+
+
+## 3.2 Calculating Readability Scores
+
+Firstly, I calculated the readability scores for each website based on the five chosen readability indices, as well as one aggregate readability score for each website as the average score across all readability tests. For this task, I employed the Readability package specifically designed for readability analyses in R. I then proceeded to name the columns with the names I wanted to use for my data visualizations. 
+
+```{r Text Analysis}
+
+# Creating an empty data frame for readability scores
+readability_scores <- data.frame(matrix(NA, nrow=100, ncol=7))
+
+# Calculating readability scores
+for (i in 1:nrow(gov_sites)){
+  readability_scores[i,] <- readability(gov_sites$clean_150[i], grouping.var = NULL)
+}
+
+# Deleting an unnecessary column
+readability_scores <- readability_scores[c(-(1))]
+
+# Naming the columns
+names(readability_scores)[1:6] <- c("Flesch_Kincaid", 
+                                    "Gunning_Fog_Index",
+                                    "Coleman_Liau",
+                                    "SMOG",
+                                    "Automated_Readability_Index",
+                                    "Average_Grade_Level")
+
+```
+
+
+## 3.3 Calculating Readability Scores
+
+Moreover, I planned to contrast the reading level required to understand federal government websites with the educational attainment in the U.S. population. For this purpose, I planned to use the most recent micro data on educational attainment available through IPUMS. However, the relevant IPUMS variable "EDUC" is coded on a scale where the years during some stages in formal education (for example, primary school) are condensed into one numeric code while for others (for example, high schools) fine-grained information on the grade level attained is available. To allow for a comparison between the data on websites and the data on educational attainment, I was forced to create a variable based on the same coding as the IPUMS variable, even though it resulted in a loss of information.
+
+
+```{r Harmonizing with the IPUMS Data}
+
+# Converting the mean readability score to the same coding scale as the IPUMS education variable
+readability_scores$adj_gl <- 0
+readability_scores$adj_gl[readability_scores$Average_Grade_Level < 5] <- 1
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 5 & readability_scores$Average_Grade_Level < 9] <- 2
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 9 & readability_scores$Average_Grade_Level < 10] <- 3
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 10 & readability_scores$Average_Grade_Level < 11] <- 4
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 11 & readability_scores$Average_Grade_Level < 12] <- 5
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 12 & readability_scores$Average_Grade_Level < 13] <- 6
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 13 & readability_scores$Average_Grade_Level < 14] <- 7
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 14 & readability_scores$Average_Grade_Level < 15] <- 8
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 15 & readability_scores$Average_Grade_Level < 16] <- 9
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 16 & readability_scores$Average_Grade_Level < 17] <- 10
+readability_scores$adj_gl[readability_scores$Average_Grade_Level >= 17] <- 11
+```
+
+## 3.4 Adding the Relevant Data to the Main Dataset
+
+To collect all data in one unified dataset, I then appended my original dataset containing information on all 100 websites with their respective readability scores.
+
+```{r Appending the Relevant Data}
+
+# Appending the main data frame with the readability scores
+gov_sites <- cbind(gov_sites, readability_scores)
+
+```
+
+## 3.5 Exporting the Data
+
+Finally, I exported the augmented dataset to have it available as the starting point for the last step in my project.
+
+```{r Exporting}
+
+# Exporting the data
+write.csv(gov_sites, "03_text_analysis_gov_sites_df.csv")
+
+```
