@@ -1,0 +1,101 @@
+domain,visits,pageviews,users,pageviews_per_session,avg_session_duration,exits,url,category,scraper_url
+irs.gov,64193161,177112152,31452667,2.759050174,164.9079401,60853428,http://irs.gov,Money and Business,https://www.irs.gov/about-irs
+medlineplus.gov,38151284,52078968,28206768,1.36506462,80.50021247,38123516,http://medlineplus.gov,Health,https://medlineplus.gov/aboutmedlineplus.html
+cdc.gov,23487288,46254542,16803034,1.969343672,118.1451687,23437498,http://cdc.gov,Health,https://www.cdc.gov/about/advisory.htm
+forecast.weather.gov,50487615,83708771,11644065,1.658006048,114.6498519,52175674,http://weather.gov,"Home, Community, and Work",https://www.weather.gov/about/
+ssa.gov,16757074,47686950,9704185,2.845780236,231.9820584,16909315,http://ssa.gov,Benefits,https://www.ssa.gov/agency/
+nps.gov,14341321,43625267,9249376,3.041928076,223.4764284,14310681,http://nps.gov,"Home, Community, and Work",https://www.nps.gov/aboutus/index.htm
+travel.state.gov,13945876,39494645,8441253,2.831994562,187.7272283,13889384,http://state.gov,Travel and Transportation,https://www.state.gov/aboutstate/
+nasa.gov,8584877,17335399,6361579,2.019294977,129.8796507,8444125,http://nasa.gov,Travel and Transportation,https://history.nasa.gov/
+uscis.gov,13888427,31844281,6332855,2.292864484,190.9096155,13082218,http://uscis.gov,Law Enforcement and Justice,https://www.uscis.gov/aboutus
+usajobs.gov,14605589,164201325,5956560,11.24236243,455.6041587,14241742,http://usajobs.gov,"Home, Community, and Work",https://www.usajobs.gov/Help/About/
+fda.gov,5834001,11934185,4205307,2.045626149,146.2844254,5480686,http://fda.gov,Consumer Safety,https://www.fda.gov/AboutFDA/WhatWeDo/default.htm
+va.gov,5195354,12003124,3601129,2.310357292,201.2196682,4887999,http://va.gov,Military and Veterans,https://www.va.gov/landing2_about.htm
+cancer.gov,4211051,6493713,3451760,1.542064677,91.6580362,4209136,http://cancer.gov,Health,https://www.cancer.gov/about-nci/overview
+epa.gov,4129665,9748230,2980674,2.360537719,170.7885298,4020510,http://epa.gov,"Home, Community, and Work",https://www.epa.gov/aboutepa/our-mission-and-what-we-do
+tsa.gov,3689218,8400081,2874392,2.276927251,130.1562458,3688261,http://tsa.gov,Travel and Transportation,https://www.tsa.gov/about/tsa-mission
+usa.gov,3316754,5539093,2816943,1.670034317,113.2927109,3316754,http://usa.gov,Government Officials,https://www.usa.gov/history-of-website
+opm.gov,4483937,11553103,2746088,2.576553373,166.4507713,4476277,http://opm.gov,Benefits,https://www.opm.gov/about-us/
+bls.gov,4786504,14196739,2711618,2.965993343,164.5137154,4829592,http://bls.gov,Money and Business,https://www.bls.gov/bls/infohome.htm
+studentaid.ed.gov,3337818,6466903,2591932,1.937464236,145.105583,3336861,http://ed.gov,Children and Education,https://www2.ed.gov/about/overview/mission/mission.html
+medicare.gov,5718144,17383274,2550760,3.040020328,262.4306973,5538136,http://medicare.gov,Health,https://www.medicare.gov/about-us/how-medicare-is-funded/medicare-funding.html
+cbp.gov,3434525,8807015,2525865,2.564259978,133.974915,3428780,http://cbp.gov,Law Enforcement and Justice,https://www.cbp.gov/about
+census.gov,3241112,10394537,2271172,3.207089727,180.7562599,3196110,http://census.gov,"Home, Community, and Work",https://www.census.gov/about/what.html
+studentloans.gov,3746668,9745357,2244362,2.601073007,349.2133592,3741880,http://studentloans.gov,Children and Education,https://studentloans.gov/myDirectLoan/counselingInstructions.action?counselingType=entrance
+ghr.nlm.nih.gov,2781515,4071258,2206062,1.46368364,104.1549181,2783430,http://nih.gov,Health,https://www.nih.gov/about-nih/what-we-do/mission-goals
+sec.gov,4804697,40259682,2194573,8.37923432,324.8849955,4865019,http://sec.gov,Money and Business,https://www.sec.gov/Article/whatwedo.html
+drugabuse.gov,2643636,8535087,2134250,3.228540919,121.5896617,2641721,http://drugabuse.gov,Health,https://www.drugabuse.gov/about-nida/directors-page
+recreation.gov,3526444,36518759,2053821,10.35568947,392.6299669,3523572,http://recreation.gov,Travel and Transportation,https://www.recreation.gov/marketing.do?goto=/acm/aboutUs.htm&tti=About
+cms.gov,4384358,13610754,2038501,3.104389286,219.304412,4399677,http://cms.gov,Health,https://www.cms.gov/About-CMS/Agency-Information/Consortia/index.html
+earthquake.usgs.gov,4977045,8472850,1920730,1.702385653,95.39631307,5003855,http://usgs.gov,"Home, Community, and Work",https://www.usgs.gov/about/about-us
+consumer.ftc.gov,2147655,3401970,1897750,1.584039336,85.58806745,2145740,http://ftc.gov,Money and Business,https://www.ftc.gov/about-ftc
+osha.gov,3645173,12113236,1891047,3.323089467,220.4549795,3645173,http://osha.gov,"Home, Community, and Work",https://www.osha.gov/about.html
+dol.gov,2334366,5402172,1792426,2.314192376,131.9142971,2318089,http://dol.gov,"Home, Community, and Work",https://www.dol.gov/general/aboutdol/majorlaws
+archives.gov,2440648,6000605,1777106,2.458611402,130.5406072,2447351,http://archives.gov,Children and Education,https://www.archives.gov/publications/general-info-leaflets/1-about-archives.html
+fs.usda.gov,2426286,8069746,1723486,3.325966518,199.3429093,2421498,http://usda.gov,"Home, Community, and Work",https://www.usda.gov/our-agency/about-usda
+dhs.gov,1872855,3799330,1527200,2.028630086,94.58998374,1877643,http://dhs.gov,Law Enforcement and Justice,https://www.dhs.gov/our-mission#
+hud.gov,2419583,6380729,1475496,2.637119289,169.1840284,2416711,http://hud.gov,"Home, Community, and Work",https://www.hud.gov/about/hud_secretary/powersec
+nhtsa.gov,2218510,3416333,1468793,1.53992229,99.40871035,2218510,http://nhtsa.gov,Travel and Transportation,https://www.nhtsa.gov/about-nhtsa/nhtsas-core-values
+gsa.gov,2240532,6554993,1339532,2.925641321,188.9042866,2191700,http://gsa.gov,Money and Business,https://www.gsa.gov/about-us/background-and-history
+energy.gov,1727316,3099403,1277295,1.794346257,121.5000168,1723486,http://energy.gov,"Home, Community, and Work",https://www.energy.gov/about-us
+hhs.gov,1647844,3919016,1254315,2.378268817,147.7089239,1573160,http://hhs.gov,Health,https://www.hhs.gov/about/strategic-plan/introduction/index.html#mission
+treasury.gov,1928390,3533147,1229420,1.832174508,100.5873693,1913070,http://treasury.gov,Money and Business,https://www.treasury.gov/about/role-of-treasury/Pages/default.aspx
+faa.gov,1954242,5762189,1160481,2.948554478,190.2278229,1948497,http://www.faa.gov,Travel and Transportation,https://www.faa.gov/about/mission/
+uspto.gov,2955779,6746491,1103989,2.282474772,203.7777747,2880137,http://uspto.gov,Money and Business,https://www.uspto.gov/about-us
+defense.gov,3105148,5829214,1073349,1.877274127,218.7539151,3067806,http://defense.gov,Military and Veterans,https://www.defense.gov/About/
+uscourts.gov,1283997,2873435,987175,2.237882955,108.642827,1303147,http://uscourts.gov,Law Enforcement and Justice,http://www.uscourts.gov/about-federal-courts/federal-courts-public
+benefits.gov,1135586,1996372,977600,1.758010402,106.0480562,1142288,http://benefits.gov,Benefits,https://benefits.gov/about-us
+fema.gov,1287827,2854285,972812,2.216357477,146.7412913,1235165,http://fema.gov,Consumer Safety,https://www.fema.gov/about-agency
+choosemyplate.gov,1292615,5324615,923023,4.119258248,311.2051137,1291657,http://choosemyplate.gov,Health,https://www.choosemyplate.gov/about-us
+petitions.whitehouse.gov,1217930,1934135,919193,1.588051037,73.00316274,1217930,http://whitehouse.gov,Government Officials,https://www.whitehouse.gov/the-trump-administration/
+bop.gov,1611460,4824804,915363,2.994057563,149.2120903,1610502,http://www.bop.gov,Law Enforcement and Justice,https://www.bop.gov/about/agency/
+consumerfinance.gov,1296445,2577569,891425,1.988182299,131.1425074,1288785,http://consumerfinance.gov,Consumer Safety,https://www.consumerfinance.gov/about-us/the-bureau/
+vets.gov,1815406,4940661,868446,2.721518492,151.6439491,1807746,http://vets.gov,Military and Veterans,https://www.vets.gov/
+cpsc.gov,1101116,2014564,855041,1.829565641,88.36610493,1094414,http://www.cpsc.gov,Consumer Safety,https://www.cpsc.gov/About-CPSC
+fmcsa.dot.gov,1364427,3910399,847381,2.865964247,188.3887207,1287827,http://dot.gov,Travel and Transportation,https://www.transportation.gov/regulations/rulemaking-requirements
+samhsa.gov,1004409,1741679,758334,1.734033646,102.0019574,989090,http://samhsa.gov,Health,https://www.samhsa.gov/about-us
+aviationweather.gov,3209514,28177086,751632,8.779237604,3455.993307,3207599,http://aviationweather.gov,Travel and Transportation,https://aviationweather.gov/info
+sba.gov,990047,2201275,741099,2.223404545,158.7978904,988132,http://sba.gov,Money and Business,https://www.sba.gov/about-sba/what-we-do/mission
+oceanservice.noaa.gov,832061,1187291,708544,1.426927833,85.75372719,833018,http://noaa.gov,"Home, Community, and Work",http://www.noaa.gov/about-our-agency
+treasurydirect.gov,976642,3523572,707587,3.607844021,246.9373107,975685,http://treasurydirect.gov,Money and Business,https://treasurydirect.gov/about.htm
+eeoc.gov,1158566,2947162,703757,2.543801562,193.4445901,1167183,http://eeoc.gov,"Home, Community, and Work",https://www.eeoc.gov/eeoc/
+nist.gov,846423,2236702,666415,2.642534525,158.5600025,790889,http://nist.gov,Money and Business,https://www.nist.gov/about-nist
+mx.usembassy.gov,979515,2808325,661627,2.867056656,195.6353256,960365,http://usembassy.gov,Travel and Transportation,https://mx.usembassy.gov/visas/
+nsopw.gov,1135586,6298385,647265,5.546374295,298.0531074,1135586,http://nsopw.gov,Law Enforcement and Justice,https://www.nsopw.gov/en/Home/About
+womenshealth.gov,748759,969940,646307,1.295396783,42.38235534,750674,http://womenshealth.gov,Health,https://www.womenshealth.gov/about-us/who-we-are/vision-mission-goals-and-history
+export.gov,794719,1351979,627158,1.701203822,134.8951252,789931,http://export.gov,Money and Business,https://www.export.gov/ITA
+ice.gov,806209,1561670,624285,1.937053543,154.4476631,774611,http://ice.gov,Law Enforcement and Justice,https://www.ice.gov/about
+sam.gov,2147655,58047975,608965,27.0285381,736.2101213,2146698,http://sam.gov,Money and Business,https://www.sam.gov/portal/SAM/?navigationalstate=JBPNS_rO0ABXdcACJqYXZheC5mYWNlcy5wb3J0bGV0YnJpZGdlLlNUQVRFX0lEAAAAAQApdmlldzowMTJhYTZjOC1lYTAzLTQzNWYtOTZiMC05Y2MwYTE3NzFmMjAAB19fRU9GX18*&portal:componentId=8c36e6ab-299f-4618-9947-8d7e71dd6130&interactionstate=JBPNS_rO0ABXdHABBfanNmQnJpZGdlVmlld0lkAAAAAQAmL2pzZi9nZW5lcmFsSW5mby9zYW1HZW5lcmFsSW5mb05hdi5qc3AAB19fRU9GX18*&portal:type=action##11
+fbo.gov,2037544,15248066,595560,7.483551766,431.9158345,2034671,http://fbo.gov,Money and Business,https://www.fbo.gov/?s=main&mode=list&tab=list&tabmode=list
+nsf.gov,904830,2617784,515131,2.893122465,176.6243957,906745,http://nsf.gov,Children and Education,https://nsf.gov/about/
+stopbullying.gov,645350,1198780,512258,1.857565662,146.4228171,644392,http://stopbullying.gov,Children and Education,https://www.stopbullying.gov/about-us/index.html
+medicaid.gov,630987,1236123,498854,1.959030852,109.2868807,629072,http://medicaid.gov,Health,https://www.medicaid.gov/about-us/index.html
+foodsafety.gov,560133,798549,480661,1.425641767,82.34359518,557261,http://foodsafety.gov,Consumer Safety,https://www.foodsafety.gov/about/
+energystar.gov,1291657,1906367,449064,1.475908078,46.69014839,1288785,http://energystar.gov,Consumer Safety,https://www.energystar.gov/about
+fdic.gov,743014,1566458,435659,2.108248297,216.3105904,741099,http://fdic.gov,Consumer Safety,https://www.fdic.gov/about/strategic/strategic/index.html
+jfklibrary.org,492151,930683,417467,1.89105173,112.437762,492151,http://jfklibrary.org,Children and Education,https://www.jfklibrary.org/About-Us/About-the-JFK-Library.aspx
+catalog.usmint.gov,656840,3457505,409807,5.263846599,187.4445405,689395,http://usmint.gov,"Home, Community, and Work",https://www.usmint.gov/about
+ready.gov,499811,968025,406934,1.936782104,117.3352527,497896,http://ready.gov,"Home, Community, and Work",https://www.ready.gov/about-us
+pay.gov,540983,5828256,393529,10.77345499,857.9011873,540983,http://pay.gov,Money and Business,https://pay.gov/WebHelp/HTML/about.html
+fws.gov,519918,1070476,379167,2.05893237,119.379456,518003,http://fws.gov,"Home, Community, and Work",https://www.fws.gov/help/about_us.html
+usaid.gov,645350,1621992,363847,2.513352444,233.1987619,647265,http://usaid.gov,Travel and Transportation,https://www.usaid.gov/who-we-are/mission-vision-values
+ada.gov,468214,822486,357145,1.756645466,105.7320541,471086,http://ada.gov,"Home, Community, and Work",https://www.ada.gov/2010_regs.htm
+privacyshield.gov,407892,923980,354272,2.265256489,101.1759951,406934,http://privacyshield.gov,Consumer Safety,https://www.privacyshield.gov/Program-Overview
+atf.gov,438532,1407514,339910,3.20960386,173.7028609,438532,http://atf.gov,Consumer Safety,https://www.atf.gov/about
+ahrq.gov,428957,939300,337995,2.189729973,126.7230911,425127,http://ahrq.gov,Health,https://www.ahrq.gov/cpi/about/profile/index.html
+deadiversion.usdoj.gov,498854,1048454,331292,2.101725154,152.8750957,497896,http://usdoj.gov,Law Enforcement and Justice,https://www.justice.gov/about
+hiv.gov,390657,600348,326505,1.536764988,114.55389,390657,http://hiv.gov,Health,https://www.hiv.gov/hiv-basics/overview/about-hiv-and-aids/what-are-hiv-and-aids
+catalog.data.gov,417467,1269635,321717,3.041282305,175.0961944,417467,http://data.gov,"Home, Community, and Work",https://www.data.gov/about
+dea.gov,385869,893340,317887,2.315138039,95.61300856,385869,http://dea.gov,Law Enforcement and Justice,https://www.dea.gov/about/mission.shtml
+peacecorps.gov,444276,1848918,304483,4.161642763,246.9118949,445234,http://peacecorps.gov,"Home, Community, and Work",https://www.peacecorps.gov/about/leadership/
+healthfinder.gov,371507,633860,298738,1.706185886,67.35052368,374380,http://healthfinder.gov,Health,https://healthfinder.gov/aboutus/
+investor.gov,333207,533323,270970,1.600575618,86.36503135,333207,http://investor.gov,Money and Business,https://www.investor.gov/about-us
+doi.gov,404062,717162,270013,1.774881083,97.60184328,404062,http://doi.gov,"Home, Community, and Work",https://www.doi.gov/whoweare
+smokefree.gov,294908,773654,258523,2.623374069,108.7498711,296823,http://smokefree.gov,Consumer Safety,https://smokefree.gov/about-smokefree
+us-cert.gov,348527,640562,250863,1.837912127,103.0028147,347570,http://us-cert.gov,Consumer Safety,https://www.us-cert.gov/about-us
+health.gov,307355,630987,249906,2.052958306,100.5389566,299695,http://health.gov,Health,https://health.gov/about-us/
+login.gov,280545,798549,249906,2.84642036,374.1402841,244161,http://login.gov,Money and Business,https://login.gov/
+ourdocuments.gov,304483,471086,245118,1.547166837,103.1224962,304483,http://ourdocuments.gov,"Home, Community, and Work",https://www.ourdocuments.gov/content.php?flash=false&page=about
+airnow.gov,809081,1777106,244161,2.196450046,172.810663,808124,https://airnow.gov,Health,https://airnow.gov/index.cfm?action=topics.about_airnow
+ncjrs.gov,301610,496939,234586,1.6476211,98.14923908,301610,https://www.ncjrs.gov,Law Enforcement and Justice,https://www.ncjrs.gov/whatsncjrs.html
+healthypeople.gov,400232,1378789,233628,3.444974415,282.1960388,398317,https://www.healthypeople.gov,Health,https://www.healthypeople.gov/2020/About-Healthy-People
